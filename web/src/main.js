@@ -905,7 +905,7 @@ async function mainReplay(source) {
 
 async function main() {
   // ── Mode detection ───────────────────────────────────────────────────────
-  // Default: replay mode with solar_simulation.json
+  // Default: replay mode with data/run_100kyr.json (see below)
   // ?replay=path/to/file.json → custom simulation file
   // ?live → original orbital-mechanics solar system
   // ?root=N → 1/N compression for sizes and distances (?ratioExp=0.25 too)

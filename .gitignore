@@ -50,7 +50,6 @@ OPRACOWANIE.md
 
 # Playwright accessibility snapshots left behind by browser automation.
 *-live.yml
-.playwright-mcp/
 
 # Screenshots captured by browser automation during research.
 app-*.png

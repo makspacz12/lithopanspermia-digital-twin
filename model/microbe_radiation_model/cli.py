@@ -376,7 +376,7 @@ def main(argv: list[str] | None = None) -> int:
     print(format_demo_report(report))
 
     if not report.used_rebound:
-        print("\nREBOUND is not installed, so nothing was integrated. See RUNNING.md.",
+        print("\nREBOUND is not installed, so nothing was integrated. See docs/en/RUNNING.md.",
               file=sys.stderr)
         return 1
 

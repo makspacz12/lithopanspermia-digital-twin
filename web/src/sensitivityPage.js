@@ -3,8 +3,8 @@
  *
  * This page used to draw a one-at-a-time tornado. That was replaced rather
  * than annotated: see sensitivity.html for what its shipped sample actually
- * contained. `charts/tornado.js` is kept because the CLI can still emit that
- * format and an old file should still open, but nothing links to it.
+ * contained. The old `tornado.js` is kept in `archive/web/` because the CLI can
+ * still emit that format, but nothing links to it.
  */
 
 import './ui/analysisPage.css';

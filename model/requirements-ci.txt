@@ -1,8 +1,8 @@
 # Pinned dependencies for the model and its test suite.
 #
-# requirements.txt lists what the whole project can use, unpinned, including the
-# analysis notebooks. This file is the smaller set the physics actually needs,
-# with exact versions.
+# requirements.txt lists everything the model can use, unpinned, including the
+# optional Gaia and SPICE tooling. This file is the smaller set the physics
+# actually needs, with exact versions.
 #
 # Pinning matters here more than in most projects. The provenance block claims
 # that a run reproduces bit for bit from its digest, and it records the package

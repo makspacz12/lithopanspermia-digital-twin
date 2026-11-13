@@ -1,9 +1,9 @@
 # Jak to uruchomić
 
-Instrukcja po polsku, sprawdzona na Twoim komputerze. Każda komenda poniżej
-została przeze mnie wykonana i działa.
+Instrukcja po polsku, z przykładami dla Windowsa (PowerShell). Każda komenda
+poniżej została sprawdzona.
 
-Wersja angielska: [`RUNNING.md`](RUNNING.md).
+Wersja angielska: [`RUNNING.md`](../en/RUNNING.md).
 
 ---
 
@@ -37,9 +37,8 @@ możesz wymusić konkretny:
 npx vite --port 4321 --strictPort
 ```
 
-> **Uwaga na port 3000.** Twój drugi projekt `spaceshield` go używa. Jeśli
-> uruchomisz `npm run dev` i Vite weźmie 3000, przerwij (`Ctrl+C`) i użyj
-> komendy z `--port 4321` powyżej.
+> **Uwaga na port 3000.** Jeśli używasz go też w innym projekcie, przerwij
+> `npm run dev` (`Ctrl+C`) i użyj komendy z `--port 4321` powyżej.
 
 ### Wybór przebiegu symulacji
 
@@ -64,7 +63,7 @@ cd web
 npm test
 ```
 
-Powinno przejść **643 testy**.
+Powinno przejść **666 testów**.
 
 ---
 
@@ -72,13 +71,13 @@ Powinno przejść **643 testy**.
 
 ### WAŻNE: najpierw pełna ścieżka do katalogu `model/`
 
-Terminal startuje zwykle w `C:\Windows\system32` albo w Twoim katalogu
+Terminal startuje zwykle w `C:\Windows\system32` albo w katalogu
 domowym. `cd model` szuka podkatalogu **względem miejsca, w którym stoisz**,
 więc zadziała dopiero wtedy, gdy już jesteś w repozytorium. Najpewniej jest
-podać pełną ścieżkę:
+podać pełną ścieżkę (dopasuj ją do miejsca, w którym masz repozytorium):
 
 ```powershell
-cd C:\Users\Maksg\Desktop\hack4_sages_nowy\model
+cd C:\Users\<użytkownik>\Desktop\lithopanspermia-digital-twin\model
 ```
 
 Sprawdzenie, czy jesteś we właściwym miejscu:
@@ -119,7 +118,7 @@ python -m microbe_radiation_model --asteroids 14 --years 3000 --dt 20 --seed 42
 ```
 
 **Ile to trwa.** Koszt zależy od liczby klatek, nie od długości symulacji.
-Zmierzone na Twoim komputerze: około **3,2 sekundy na klatkę**.
+Zmierzone na jednym z komputerów zespołu: około **3,2 sekundy na klatkę**.
 
 | Komenda | Klatek | Czas | Rozmiar pliku |
 |---|---|---|---|
@@ -151,7 +150,7 @@ zniszczonych odłamków i zerową różnicę dawki.
 
 ```bash
 cd model
-python -m pytest -q
+python -m unittest discover tests
 ```
 
 Powinno przejść **290 testów**.
@@ -168,7 +167,7 @@ Uruchamiaj z katalogu głównego repozytorium (nie z `model/`).
 
 ### ⚠️ Ostrzeżenie przed konferencją
 
-**Ta komenda nadpisze replay, pod który skalibrowane są wszystkie wykresy.**
+**Ta komenda nadpisze replay konferencyjny (3000 lat), który czyta większość testów.**
 
 Obecnie:
 - `web/public/data/cosmos_visualizer_simulation.json` — 151 klatek, 3000 lat
@@ -195,13 +194,13 @@ Nic nie zapisuje, tylko raportuje.
 Jesteś poza katalogiem `model/`. Podaj pełną ścieżkę:
 
 ```powershell
-cd C:\Users\Maksg\Desktop\hack4_sages_nowy\model
+cd C:\Users\<użytkownik>\Desktop\lithopanspermia-digital-twin\model
 ```
 
 ### „cd : Cannot find path ... because it does not exist"
 
 To samo: `cd model` działa tylko wtedy, gdy stoisz już w katalogu
-`hack4_sages_nowy`. Z `C:\Windows\system32` trzeba pełnej ścieżki.
+głównym repozytorium. Z `C:\Windows\system32` trzeba pełnej ścieżki.
 
 ### Port zajęty
 
@@ -241,19 +240,19 @@ npx vitest run tests/nazwa.test.js
 ## 5. Struktura katalogów
 
 ```
-hack4_sages_nowy/
+lithopanspermia-digital-twin/
 ├── model/          symulacja Pythonowa  (uruchamiaj STĄD)
 │   └── microbe_radiation_model/   90 modułów
 ├── web/            wizualizacja 3D      (uruchamiaj STĄD)
-│   ├── src/            57 modułów JavaScript
-│   ├── tests/          643 testy
+│   ├── src/            58 modułów JavaScript
+│   ├── tests/          666 testów
 │   └── public/data/    pliki replay
 ├── analysis/       analiza w R i Pythonie
 ├── tools/          skrypt eksportu      (uruchamiaj z KORZENIA)
-├── PRZEWODNIK.md   opis programu po polsku
-├── URUCHAMIANIE.md ten plik
-├── README.md       opis projektu po angielsku
-└── OPRACOWANIE.md  Twoje prywatne notatki (nie idzie na GitHub)
+├── docs/           dokumentacja: docs/en/ — po angielsku, docs/pl/ — po polsku
+├── archive/        stare, nieużywane materiały
+├── presentation/   zrzuty ekranu i plan slajdów
+└── README.md       opis projektu po angielsku
 ```
 
 **Zasada:** `model/` i `web/` uruchamiasz z ich własnych katalogów,

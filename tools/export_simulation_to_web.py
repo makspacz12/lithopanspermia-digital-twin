@@ -42,8 +42,7 @@ EXPORTS = [
 
 # Hand-authored scene data that lives only in web/public/data and must never be
 # overwritten by a model run.
-WEB_ONLY = {"solar_system.json", "solar_simulation.json",
-            "simulation_template.json", "test_replay.json"}
+WEB_ONLY = {"solar_system.json", "test_replay.json"}
 
 
 def human_size(num_bytes: int) -> str:
@@ -64,7 +63,7 @@ def run_pipeline() -> int:
     )
     if result.returncode != 0:
         print(f"\nThe pipeline exited with code {result.returncode}.", file=sys.stderr)
-        print("REBOUND is required for the Mars pipeline; see RUNNING.md.", file=sys.stderr)
+        print("REBOUND is required for the Mars pipeline; see docs/en/RUNNING.md.", file=sys.stderr)
     return result.returncode
 
 

@@ -1,7 +1,7 @@
 {
-  "name": "cosmos-3d",
+  "name": "lithopanspermia-digital-twin-web",
   "version": "1.0.0",
-  "description": "3D solar system visualizer using Three.js",
+  "description": "3D visualizer and analysis pages for the lithopanspermia digital twin (Three.js + Vite)",
   "type": "module",
   "scripts": {
     "dev": "vite",

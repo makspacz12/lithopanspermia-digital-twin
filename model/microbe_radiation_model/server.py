@@ -447,7 +447,7 @@ class Handler(BaseHTTPRequestHandler):
         if find_spec("rebound") is None:
             self._send(503, {
                 "error": "REBOUND is not installed in this environment, so no "
-                         "orbital run is possible. See RUNNING.md."
+                         "orbital run is possible. See docs/en/RUNNING.md."
             })
             return
         run = REGISTRY.start(values)
@@ -474,7 +474,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if find_spec("rebound") is None:
         print("WARNING: REBOUND is not importable here, so /api/runs will refuse "
-              "to start a run. See RUNNING.md.\n")
+              "to start a run. See docs/en/RUNNING.md.\n")
 
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     print(f"Simulation API listening on http://{args.host}:{args.port}")

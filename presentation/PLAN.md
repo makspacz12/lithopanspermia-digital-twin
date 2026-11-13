@@ -1,6 +1,6 @@
 # Prezentacja — 5 slajdów
 
-Zrzuty ekranu: `prezentacja/screeny/` (38 plików, 3840×2160, gotowe do wrzucenia
+Zrzuty ekranu: `presentation/screeny/` (38 plików, 3840×2160, gotowe do wrzucenia
 na slajd bez skalowania w górę).
 
 ---
@@ -217,7 +217,7 @@ w biegu 100 tys. lat rój rozjeżdża się poza kadr. Pozostałe menu.
 ## 3. Demo na żywo (30 min przygotowania)
 
 ```powershell
-cd C:\Users\Maksg\Desktop\hack4_sages_nowy\web
+cd C:\Users\<użytkownik>\Desktop\lithopanspermia-digital-twin\web
 npx vite --port 4321 --strictPort
 ```
 

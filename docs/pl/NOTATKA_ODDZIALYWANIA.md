@@ -126,10 +126,8 @@ niezamarznięte błonki na ziarnach minerałów wciąż działają, tylko wolno.
 **W kodzie:** `chemistry/hydrolysis_model.py`. Współczynniki cytowane (Lindahl & Nyberg).
 Fizyka rozsądna.
 
-**[WADA J — NAPRAWIONE 2026-09-01]** Było: `CONFERENCE_THEORY.md` wiersz 48 nadal pisał
-„T < 273,15 K → k = 0" (twarde cięcie), którego kod nie robi (używa ciągłej
-`water_activity`). Wiersz 9 tabeli przepisany na `k = A·exp(−Ea/R_gT)·a_w(T)·w_water`
-+ przypis o `a_w`. README było już spójne (w. 184 mówi „before the freezing cut was removed").
+**[WADA J — NAPRAWIONE 2026-09-01]** `CONFERENCE_THEORY.md` opisywał twarde cięcie
+„T < 273,15 K → k = 0", którego kod nie robi; poprawiony na ciągłe `a_w(T)`.
 
 ---
 
@@ -196,18 +194,10 @@ więc pochłaniają też krótkozasięgowe promieniowanie α i β — a to ono d
 Wywoływane w `simulation/scenarios.py` przy liczeniu przeżycia z **prawdziwym promieniem
 i gęstością fragmentu** (linie ~1082–1093) — to zostało świadomie naprawione.
 
-**[WADA E — NAPRAWIONE 2026-09-01]**
-Było: w `scenarios.py` `gamma_dose` do `env_updates` / `radiation_decay_gy_per_year`
-(panel + JSON) liczone z `material_config.rock_material.density` (domyślny bazalt),
-nie z gęstością fragmentu. Ten sam błąd „jeden fragment, dwa ciała", co naprawiony
-wyżej dla przeżycia. Teraz przekazuje `density_kg_m3=rock.density_kg_m3`.
-
-**[WADA F — NAPRAWIONE 2026-09-01]**
-Było: `_collect_json_output_payloads` wołało `radiation_decay_gy_per_year_from_rock(rock)`
-bez `radius_m`/`density_kg_m3` → wartość „nieskończonej matrycy" (górne ograniczenie),
-podczas gdy przeżycie używa wersji z poprawką skończonego rozmiaru. Teraz przekazuje
-`radius_m=rock.radius_m, density_kg_m3=rock.density_kg_m3` — eksportowane
-`gamma_surface_flux` / `gamma_local_flux` zgadzają się z tym, co faktycznie zabija mikroby.
+**[WADY E, F — NAPRAWIONE 2026-09-01]** Dawka gamma w panelu i eksporcie JSON
+(`env_updates`, `_collect_json_output_payloads`) liczyła się z domyślnej gęstości bazaltu
+i bez poprawki skończonego rozmiaru. Teraz dostaje `radius_m` i `density_kg_m3` fragmentu,
+więc eksport zgadza się z tym, co liczy przeżycie.
 
 **[WADA H — proxy „pola gamma" bez kalibracji]**
 `internal_gamma_rate_from_rock` liczy `A_v·(1−exp(−μR))/μ`. Jednostki wychodzą `Bq/m²`,
@@ -300,7 +290,7 @@ potęgowe są standardem dla ejekty impaktowej.
 | Kanał | Wchodzi do `survival_function`? | Uwaga |
 |---|---|---|
 | GCR (§7) po osłonie | **TAK** — `radiation_space` | główny zabójca; wada B (za mała dawka na małych ciałach) |
-| Radionuklidy U/Th/K (§8) | **TAK** — `radiation_decay` | w przeżyciu liczone dobrze; eksport/panel z wadami E, F |
+| Radionuklidy U/Th/K (§8) | **TAK** — `radiation_decay` | liczone dobrze (wady E, F w eksporcie naprawione) |
 | Hydroliza (§6) | **TAK** — przez `k_hyd·c_hyd` | skala `c_hyd = 1200` bez źródła (wada G) |
 | „UV"/fotony gwiazdy (§3) | **NIE bezpośrednio** | tylko przez temperaturę → hydroliza; zła etykieta (wada A) |
 | Erozja (§10) | pośrednio | zcieńcza osłonę → więcej GCR; mnożniki heurystyczne (wada I) |
@@ -317,7 +307,3 @@ potęgowe są standardem dla ejekty impaktowej.
    „błędy", ale to one rządzą liczbą na końcu — trzeba je jawnie pokazywać jako wrażliwość.
 4. **Wada C** — amplituda modulacji słonecznej `M = 1,3` zaniża zależność dawki od
    trajektorii.
-
-**Naprawione 2026-09-01 (drobne, bezpieczne, 290 testów Pythona nadal przechodzi):**
-wady **E, F** (spójność dawki gamma w eksporcie/panelu z tym, co liczy przeżycie) i
-**J** (rozjazd `CONFERENCE_THEORY.md` vs kod dla hydrolizy).

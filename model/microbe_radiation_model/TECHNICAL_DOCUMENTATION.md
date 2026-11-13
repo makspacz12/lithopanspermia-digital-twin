@@ -312,7 +312,7 @@ REBOUNDx radiation forces (including dynamic β refresh), and the JSON payload f
 
 ### 2.12 `demos/` — entry points
 
-See the command table in [../../RUNNING.md](../../RUNNING.md). `console.py` provides
+See the command table in [../../docs/en/RUNNING.md](../../docs/en/RUNNING.md). `console.py` provides
 `configure_utf8_output()`, which forces UTF-8 on stdout.
 
 ---
@@ -341,7 +341,7 @@ Rock presets come from `materials/rocks/variants.py` and
 
 ### 3.3 Not a data source
 
-`environment.ipynb` is a working / archival notebook. The current runtime does not depend
+`environment.ipynb` (now in `archive/model/`) is an archival notebook. The current runtime does not depend
 on it and does not read it.
 
 ---
@@ -421,24 +421,84 @@ evaluates the survival function each step, and exports the visualizer JSON.
 7. The hydrolysis survival coefficient (1200) is a hard-coded constant with no cited source (audit parameter in `biology/constants.py`).
 8. Python unit tests live in `model/tests/` (wiring, biology, radiation, thermal, provenance, regressions). They do not yet cover every limiting case listed in §8.
 
+### 7.1 Known questions in the physics (from the README)
+
+Stated here rather than left for a reader to discover.
+
+**Nothing in a typical swarm is shielded.** Ejecta sizes follow a truncated power law from
+1 mm with slope `q_size = 2`, whose median is 2 mm and which yields **0.14 fragments above
+10 cm per swarm of fourteen**. The cosmic-ray attenuation length is about 0.46 m in the reference basalt
+(3460 kg/m³; 160 g/cm² in general), so every
+fragment here keeps more than 90 % of the flux at its centre. Lithopanspermia in this
+configuration rests entirely on the rare large fragments in the tail — which is why
+`q_size` is now an exposed parameter.
+
+**Fragments do not escape on the timescales the demo runs.** A run of a few thousand years
+ends with every fragment still bound to the Sun. The `escaped`, `arrived` and `destroyed`
+states exist and are exercised by tests, but a short run reports zero of each. The
+interface says so on its face rather than leaving the reader to assume otherwise.
+
+**Survival times are far shorter than interstellar transit times.** The model says microbes
+die long before they could arrive. That is a result, not a defect — it is the quantitative
+form of the argument that lithopanspermia needs large, well-shielded fragments.
+
+**Internal U/Th/K decay is negligible here** — 0.042 % of the dose in the bundled 3 000-year run, a ratio of 2376 : 1
+against cosmic rays. A fully cited subsystem that turns out not to matter in this
+configuration, drawn on a log axis because a stacked area would give it zero pixels and so
+claim it does not exist.
+
+**The rock thermal model is isothermal.** Centre and surface temperatures are equal to
+twelve significant figures.
+
+**The output step aliases the orbits.** A frame is written every 20 years while periods run
+from 1.8 to 74.6 years. The scene solves each fragment's orbit rather than joining sampled
+points, so the *drawing* is exact — but a per-frame readout still steps past events.
+
+### 7.2 Coefficient status
+
+**Still open**
+
+1. **`hydrolysis_surv_coeff = 1200`** (`biology/constants.py`) — written as `1.2/0.001`
+   with **no cited source**. Treat as a sensitivity / audit parameter.
+
+**Resolved (cited), residual uncertainty kept**
+
+2. **`radiation_surv_coeff`** — runtime samples **2.5e-5 – 4.3e-4 1/Gy** per fragment
+   (default 2.5e-4), from the chronic-exposure table in Mileikowsky et al. (2000). Two
+   traps in that table are documented in the code: a **multiplier in the column header**
+   (×10⁻⁵, ×10⁻⁶) and a dose-rate column in **cGy/year, not Gy/year**. Getting them wrong
+   lands you on the acute laboratory band (6.1e-4 – 1.5e-3), which does **not** transfer to
+   cosmic rays: for heavy ions the action cross-section saturates, so per unit *mean* dose
+   high-LET radiation is less efficient, not more (Baltschukat & Horneck 1991).
+   Cross-checked against Valtonen et al. (2009) to within a factor of 1.7.
+3. **DNA hydrolysis Arrhenius** — `Ea = 130 kJ/mol`, `A = 2.3e11` 1/s, Lindahl & Nyberg
+   (1972).
+4. **Internal gamma dose** — Cresswell, Carter & Sanderson (2018), Table 5.
+5. **Cosmic-ray attenuation** — `k = 1/1600` m²/kg, Gosse & Phillips (2001). Calibrated for
+   cosmogenic-nuclide production, not absorbed dose.
+
 ---
 
 ## 8. Where to take this next
 
-1. Reconcile the fragment-radius issue in §9 — without it the biological chain reports zeros. *(Server/UI now expose `radius_min`/`radius_max` for the Mars pipeline; catalog-radius inheritance in static demos may still bite — see §9.)*
-2. Wire `internal_heat` and `radionuclide_model` fully into the main report.
-3. Extend the attenuation model with an energy-dependent cross-section.
-4. Add a CLI argument parser (time, step count, rock, composition).
-5. Extend `model/tests/` for unit integrity, limiting behaviour (`distance → 0`,
+1. Wire `internal_heat` and `radionuclide_model` fully into the main report.
+2. Extend the attenuation model with an energy-dependent cross-section.
+3. Add a CLI argument parser (time, step count, rock, composition).
+4. Extend `model/tests/` for unit integrity, limiting behaviour (`distance → 0`,
    `bio_mass_fraction → 0/1`) and report regression where still missing.
-6. Automate the handoff of `data/*.json` to the visualizer's `public/data/`.
+5. Automate the handoff of `data/*.json` to the visualizer's `public/data/`.
 
 ---
 
-## 9. Known issue: fragment radius
+## 9. Fixed issue: fragment radius
 
-`simulation/config.py::default_material_config()` reads `rock.radius_m` from the catalog
-and uses it as the radius of the simulated fragment. For catalog entries derived from a
+**Fixed.** `default_material_config()` now uses its own `DEFAULT_FRAGMENT_RADIUS_M`
+(0.5 m) unless a radius is passed explicitly, and the default `run.py` report shows a
+non-zero core flux and a centre temperature of about 243 K. The history is kept below
+because the trap is easy to reintroduce.
+
+`simulation/config.py::default_material_config()` used to read `rock.radius_m` from the catalog
+and use it as the radius of the simulated fragment. For catalog entries derived from a
 reference body this is the radius of that body — `basalt_vtype` resolves to
 **261 385 m** (asteroid 4 Vesta). The rock's own `notes` field warns about exactly this:
 
@@ -447,7 +507,7 @@ reference body this is the radius of that body — `basalt_vtype` resolves to
 Meanwhile `ImpactSimulationConfig` samples fragments between **0.001 m and 5 m** — five
 orders of magnitude apart.
 
-Observable consequences in the default `run.py` report:
+Observable consequences in the default `run.py` report at the time:
 
 | Reported value | Cause |
 |---|---|
@@ -456,7 +516,6 @@ Observable consequences in the default `run.py` report:
 | `Centre temperature: 875.84 K` | `Q R²/(6k)` with R = 261 km gives a 633 K rise |
 | `Hydrolysis rate: 5.279e+04 1/s` | Computed from that centre temperature |
 
-The physics is correct at every step; the input radius is not. A fix is to give
-`SimulationMaterialConfig` its own fragment radius rather than inheriting the catalog
-entry's reference-body radius — the `0.5 m` fallback already present in
-`default_material_config()` for legacy dict variants is a reasonable starting value.
+The physics was correct at every step; the input radius was not. The fix gave the
+material config its own fragment radius instead of inheriting the catalog entry's
+reference-body radius.

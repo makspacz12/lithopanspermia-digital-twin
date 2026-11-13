@@ -787,7 +787,7 @@ export function createControlPanel({ onFinished }) {
           If port 8000 is taken, start it with <code>--port 8010</code> and open
           this page with <code>?api=http://127.0.0.1:8010</code>.
           <br><br>
-          Full setup: <code>RUNNING.md</code>.
+          Full setup: <code>docs/en/RUNNING.md</code>.
         </div>
       </div>
     `;

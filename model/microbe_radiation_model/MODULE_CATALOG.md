@@ -112,10 +112,25 @@ lowest-level physics up to the runnable scenarios.
 | `particle_ops.py` | `ParticleMetadataStore` and helpers for removing generated bodies |
 | `reboundx_forces.py` | Loads REBOUNDx radiation forces, assigns and dynamically refreshes β per particle |
 | `visualizer_export.py` | Builds the object catalog and per-frame payload for the 3D viewer |
+| `dose_profile.py` | Dose as a function of depth inside a fragment, photon and cosmic-ray channels side by side |
+| `icrs_transform.py` | ICRS spherical → Cartesian conversion without `astropy.coordinates` |
+| `terminal_report.py` | End-of-run summary of fragment outcomes (escaped / collided / arrived) for the Mars pipeline |
 | `__main__.py` | `python -m microbe_radiation_model.simulation` |
 | `__init__.py` | Re-exports the simulation API with `ImportError` fallbacks |
 
-## 9) Entry points: `demos/`
+## 9) Ensembles and sensitivity: `ensembles/`
+
+| Module | Responsibility |
+|---|---|
+| `runner.py` | Runs the Mars pipeline many times (seed ensemble or 2D grid) and summarises survival |
+| `grid.py` | 2D parameter grids: ejection velocity × fragment radius |
+| `aggregate.py` | Median and percentiles of scalar run metrics |
+| `morris.py` | Morris elementary-effects screening; its output is shown on `web/sensitivity.html` |
+| `sensitivity.py` | One-at-a-time (OAT) sensitivity → tornado ordering (`--tornado`, kept for older output) |
+| `__main__.py` | `python -m microbe_radiation_model.ensembles` — `--seeds`, `--grid`, `--morris`, `--tornado` |
+| `__init__.py` | Re-exports the ensemble API |
+
+## 10) Entry points: `demos/`
 
 | Module | Responsibility |
 |---|---|
@@ -130,18 +145,23 @@ lowest-level physics up to the runnable scenarios.
 | `build_full_system.py` | Constructs the complete Solar System + Gaia environment |
 | `fetch_gaia_catalog.py` | Refreshes `nearest_50_gaia.csv` from the Gaia archive |
 
-## 10) Package level
+## 11) Package level
 
 | Module | Responsibility |
 |---|---|
 | `__init__.py` | Public API, wrapped in `try/except ImportError` so the package degrades gracefully without `rebound` / `astroquery` |
 | `data_store.py` | JSON persistence: gamma timeseries, rock summary, star UV profile, visualizer replay |
 | `asteroid_state.py` | `AsteroidState` and `AsteroidStateStore` — mutable per-asteroid state through the pipeline |
+| `cli.py` | Command-line interface for the Mars ejecta pipeline (`--asteroids`, `--years`, `--seed`, …) |
+| `__main__.py` | `python -m microbe_radiation_model` — delegates to `cli.py` |
+| `server.py` | Local HTTP API that runs the simulation for the visualizer's run console |
+| `provenance.py` | Seed, parameter digest, git commit, package versions and coefficient audit carried by every export |
+| `run_overrides.py` | Thread-local physics overrides for ensemble and sensitivity runs |
 
-## 11) Archive
+## 12) Archive
 
-`../archive/` holds `legacy/` (compatibility aliases), `concepts/` (design notes) and
-`legacy_modules/` including `aliases_v1/` (the first-generation flat module layout).
+`../../archive/` (repository root) holds `concepts/` (design notes), the old notebook
+and `model/legacy_modules/` (the superseded shielding model).
 None of it is on the runtime path.
 
 ## Data flow, high level

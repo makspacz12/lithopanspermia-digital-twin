@@ -10,7 +10,7 @@ policzona z danych. Nie ma tu wartości „z pamięci".
 
 Dokumenty pokrewne: [`PRZEWODNIK.md`](PRZEWODNIK.md) (krótszy opis użytkowy),
 [`URUCHAMIANIE.md`](URUCHAMIANIE.md) (komendy),
-[`CONFERENCE_THEORY.md`](CONFERENCE_THEORY.md) (wersja angielska, twierdzenia T1–T11).
+[`CONFERENCE_THEORY.md`](../en/CONFERENCE_THEORY.md) (wersja angielska, twierdzenia T1–T11).
 
 ---
 
@@ -105,7 +105,7 @@ zamiast wybrać jedną wartość i podać jeden wynik.
                          │ tools/export_simulation_to_web.py
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  web/          JavaScript, 57 modułów, Three.js + Vite      │
+│  web/          JavaScript, 58 modułów, Three.js + Vite      │
 │  scena 3D + 9 wykresów + tryb prezentacji                   │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -128,7 +128,7 @@ To jest architektoniczna konsekwencja wyboru fizycznego, a nie odwrotnie.
 | Warstwa | Moduły | Testy |
 |---|---|---|
 | `model/` | 90 plików Python | 290 |
-| `web/` | 57 plików JavaScript | 638 |
+| `web/` | 58 plików JavaScript | 666 |
 | `analysis/` | R + Python | — |
 
 ---
@@ -703,7 +703,10 @@ To **nie są trzy długości tego samego pytania**, tylko trzy różne pytania.
 **Wniosek:** przelot przez Układ Słoneczny w tej skali czasu jest **do
 przeżycia**. To jest wynik, nie brak wyniku.
 
-Wszystkie wykresy są skalibrowane pod ten przebieg.
+Na tym przebiegu opiera się większość testów i scenariusz wystąpienia. Strona
+startuje jednak z przebiegiem 100 tys. lat, bo tu diagram fazowy i „same dose,
+different fate” nie mają czego pokazać; ten otwiera się adresem
+`?replay=data/cosmos_visualizer_simulation.json` albo z menu Analysis.
 
 ### 12.2 Sto tysięcy lat
 
@@ -1279,7 +1282,7 @@ Uczciwa lista. **Warto ją wygłosić samemu**, zanim padnie z sali.
 
 | Warstwa | Liczba testów |
 |---|---|
-| `web/` | **638** |
+| `web/` | **666** |
 | `model/` | **290** |
 
 Nie sprawdzają tylko, czy kod się nie wywala. Sprawdzają fizykę:
@@ -1467,7 +1470,7 @@ Zespół wielu ziaren to najbardziej wartościowe możliwe rozszerzenie.
 Nie wiadomo, i nie twierdzimy inaczej. **Wiadomo natomiast, że były**, bo je
 znaleźliśmy i naprawiliśmy — lista w §22.
 
-928 testów, z których większość sprawdza **własności fizyczne**, nie tylko czy
+956 testów, z których większość sprawdza **własności fizyczne**, nie tylko czy
 kod się uruchamia. Każda kluczowa liczba przeliczona niezależnie. Prowenancja
 obejmująca współczynniki, więc zmiana kalibracji zmienia odcisk palca.
 

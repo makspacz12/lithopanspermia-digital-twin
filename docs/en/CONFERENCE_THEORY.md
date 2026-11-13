@@ -212,8 +212,8 @@ Martian meteorites on Earth confirm ejection and transit within the Solar System
 2. Chain T2 — one slide.
 3. GCR attenuation path ≈ 0.5 m.
 4. Erosion vs shielding → a size optimum must exist.
-5. (Target) survival heatmap.
-6. (Target) sensitivity tornado — honesty.
+5. Survival heatmap (`web/grid.html`).
+6. Morris sensitivity screening (`web/sensitivity.html`, replaced the tornado) — honesty.
 7. Limitations T7 — our words, not questions from the audience.
 
 ---

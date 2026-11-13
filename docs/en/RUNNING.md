@@ -90,7 +90,7 @@ them to be present locally instead.
 cd web
 npm install
 npm run dev        # http://localhost:3000
-npm test           # 264 Vitest tests
+npm test           # 666 Vitest tests
 npm run build      # production build into dist/
 npm run preview    # serve the built output
 ```
@@ -189,6 +189,31 @@ that is the substeps trick above.
 
 ---
 
+## 2d. Sensitivity screening and parameter sweeps
+
+```bash
+cd model && source .venv/bin/activate
+
+# Morris elementary-effects screening
+python -m microbe_radiation_model.ensembles --morris --quick \
+  --seeds 0,1 --trajectories 12 --levels 4 --asteroids 6 --years 200 --dt 2 \
+  --out ../web/public/data/morris_sample.json
+
+# 2D heatmap: velocity × fragment radius
+python -m microbe_radiation_model.ensembles --grid --v-steps 3 --radius-steps 3 --seeds 0,1,2
+```
+
+Load the JSON in `web/grid.html` or `web/sensitivity.html`, or use the bundled samples.
+
+**Re-freeze the parameter schema** after changing `server.PARAMETERS`, so the run console
+still renders offline:
+
+```bash
+python tools/export_parameter_schema.py
+```
+
+---
+
 ## 3. Connecting the two
 
 The model writes JSON; the site serves JSON; this script moves it across.
@@ -214,7 +239,7 @@ Rscript analysis/radiation_to_survival.R
 
 Needs the `tidyverse` package. Produces the regression of cell kill frequency against
 radiation dose rate that yields `radiation_surv_coeff`; the fitted values are tabulated
-in [analysis/README.md](analysis/README.md).
+in [analysis/README.md](../../analysis/README.md).
 
 `analysis/survival_function.py` is the reference implementation of the survival function.
 The version the simulation actually runs is
